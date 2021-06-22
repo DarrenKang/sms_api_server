@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.sn</groupId>
+	<artifactId>sms_api_server</artifactId>
+	<version>1.0-SNAPSHOT</version>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.4.RELEASE</version>
+		<relativePath />
+	</parent>
+
+	<repositories>
+		<repository>
+			<id>Nexus Public</id>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<!-- <url>http://dev-jenkins.sinonet.me:9002/content/groups/public/</url> -->
+			<url>http://nexus.sinonet.me/repository/public/</url>
+		</repository>
+		<!-- <repository> <id>spring-snapshots</id> <name>Spring Snapshots</name>
+			<url>https://repo.spring.io/libs-snapshot</url> <snapshots> <enabled>true</enabled> 
+			</snapshots> </repository> -->
+	</repositories>
+
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>Maven Plugin Repository</name>
+			<!-- <url>http://dev-jenkins.sinonet.me:9002/content/groups/public/</url> -->
+			<url>http://nexus.sinonet.me/repository/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<!-- <url>http://dev-jenkins.sinonet.me:9002/content/repositories/releases/</url> -->
+			<url>http://nexus.sinonet.me/repository/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<!-- <url>http://dev-jenkins.sinonet.me:9002/content/repositories/snapshots/</url> -->
+			<url>http://nexus.sinonet.me/repository/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
+	<dependencies>
+		<!-- container -->
+		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<!-- <dependency> <groupId>javax.mail</groupId> <artifactId>javax.mail-api</artifactId> 
+			<version>1.6.1</version> </dependency> <dependency> <groupId>javax.activation</groupId> 
+			<artifactId>activation</artifactId> <version>1.1</version> </dependency> 
+			<dependency > <groupId >com.sun.mail</groupId > <artifactId >javax.mail</artifactId 
+			> <version >1.5.0 </version > </dependency > -->
+		<!--<dependency> -->
+		<!--<groupId>3rd-party</groupId> -->
+		<!--<artifactId>javaee</artifactId> -->
+		<!--<version>5</version> -->
+		<!--<scope>provided</scope> -->
+		<!--</dependency> -->
+
+		<!--<dependency> -->
+		<!--<groupId>javax.servlet.jsp</groupId> -->
+		<!--<artifactId>jsp-api</artifactId> -->
+		<!--<version>2.1</version> -->
+		<!--<scope>provided</scope> -->
+		<!--</dependency> -->
+
+
+
+
+		<!--&lt;!&ndash; https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api 
+			&ndash;&gt; -->
+		<!--<dependency> -->
+		<!--<groupId>javax.servlet</groupId> -->
+		<!--<artifactId>javax.servlet-api</artifactId> -->
+		<!--<version>4.0.1</version> -->
+		<!--<scope>provided</scope> -->
+		<!--</dependency> -->
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-vault-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-vault-config-consul</artifactId>
+		</dependency>
+		<!--container -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring.boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+			<version>${spring.boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+
+		<!-- spring -->
+
+
+
+		<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- 腾讯短信 -->
+		<dependency>
+			<groupId>com.github.qcloudsms</groupId>
+			<artifactId>qcloudsms</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-core</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>ognl</artifactId>
+					<groupId>ognl</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-mock</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-dbunit</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-nop</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>dbunit</artifactId>
+					<groupId>org.dbunit</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hibernate</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-tx</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-spring</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-tx</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-inject</artifactId>
+			<version>${unitils.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- complier -->
+
+		<!--hibernate -->
+
+		<!--<dependency> -->
+		<!--<groupId>org.hibernate</groupId> -->
+		<!--<artifactId>hibernate-core</artifactId> -->
+		<!--<version>${hibernate.version}</version> -->
+		<!--</dependency> -->
+
+		<!--hibernate -->
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.5.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>oscache</artifactId>
+			<version>2.4.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jms</artifactId>
+					<groupId>javax.jms</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<!--<dependency> -->
+		<!--<groupId>org.slf4j</groupId> -->
+		<!--<artifactId>slf4j-log4j12</artifactId> -->
+		<!--<version>1.6.6</version> -->
+		<!--</dependency> -->
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
+		<!--commons -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils-core</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.7</version>
+		</dependency>
+
+
+		<!--commons -->
+
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.49</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>pinyin4j</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>2.5.0FIX</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.4.8FIX</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>3rd-party</groupId>
+			<artifactId>josql</artifactId>
+			<version>1.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>3rd-party</groupId>
+			<artifactId>gentlyWEB-utils</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewritefilter</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
+		<!--mina -->
+
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-core</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-integration-spring</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+
+		<!--mina -->
+
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>2.6.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>FIXED</groupId>
+			<artifactId>MutilSpringRmiProxy</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.4</version>
+		</dependency>
+
+		<!--activemq -->
+
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-core</artifactId>
+			<version>${activemq.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-spring</artifactId>
+			<version>${activemq.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-pool</artifactId>
+			<version>${activemq.version}</version>
+		</dependency>
+
+		<!--activemq -->
+
+		<dependency>
+			<groupId>3rd-party</groupId>
+			<artifactId>lingo</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>backport-util-concurrent</groupId>
+			<artifactId>backport-util-concurrent</artifactId>
+			<version>2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.xbean</groupId>
+			<artifactId>xbean-spring</artifactId>
+			<version>3.11.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>p6spy</groupId>
+			<artifactId>p6spy</artifactId>
+			<version>2.1.4</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>nineorange</groupId>
+			<artifactId>nosms</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>3rd-party</groupId>
+			<artifactId>todaynic-sms</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>3rd-party</groupId>
+			<artifactId>emayclient</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.9.3</version>
+		</dependency>
+
+		<!--<dependency> -->
+		<!--<groupId>com.nexmo</groupId> -->
+		<!--<artifactId>client</artifactId> -->
+		<!--<version>3.6.0</version> -->
+		<!--</dependency> -->
+
+		<dependency>
+			<groupId>3rd-party</groupId>
+			<artifactId>jdom</artifactId>
+			<version>0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.tencentcloudapi</groupId>
+			<artifactId>tencentcloud-sdk-java</artifactId>
+			<version>3.1.48</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-core</artifactId>
+			<version>4.5.0</version>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-vault-dependencies</artifactId> 
+				<version>2.1.2.BUILD-SNAPSHOT</version> <scope>import</scope> <type>pom</type> 
+				</dependency> -->
+		</dependencies>
+	</dependencyManagement>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.complie.version>1.8</project.complie.version>
+		<struts2.version>2.3.32</struts2.version>
+		<spring.version>5.0.5.RELEASE</spring.version>
+		<hibernate.version>5.1.0.Final</hibernate.version>
+		<unitils.version>3.3</unitils.version>
+		<activemq.version>5.7.0</activemq.version>
+		<spring.boot.version>2.0.4.RELEASE</spring.boot.version>
+		<jetty.port>8080</jetty.port>
+		<tomcat.port>8080</tomcat.port>
+		<spring-cloud.version>Finchley.SR1</spring-cloud.version>
+	</properties>
+
+
+	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${resource.dir}</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<overwrite>true</overwrite>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<reportOutputDirectory>/win/share/javadoc/${project.name}</reportOutputDirectory>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<!--<plugin> -->
+			<!--<groupId>org.apache.maven.plugins</groupId> -->
+			<!--<artifactId>maven-war-plugin</artifactId> -->
+			<!--<version>2.2</version> -->
+			<!--<configuration> -->
+			<!--<webappDirectory>${web.dir}</webappDirectory> -->
+			<!--</configuration> -->
+			<!--</plugin> -->
+
+			<!-- nnnn -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<includes>
+						<include>**/*.class</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<includes>
+						<include>**/*.class</include>
+					</includes>
+				</configuration>
+			</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${project.complie.version}</source>
+					<target>${project.complie.version}</target>
+				</configuration>
+			</plugin>
+			<!--<plugin> -->
+			<!--<groupId>org.springframework.boot</groupId> -->
+			<!--<artifactId>spring-boot-maven-plugin</artifactId> -->
+			<!--</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-gitexe</artifactId>
+						<version>1.9.2</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<checkModificationExcludes>
+						<checkModificationExclude>pom.xml</checkModificationExclude>
+					</checkModificationExcludes>
+				</configuration>
+			</plugin>
+
+
+		</plugins>
+	</build>
+
+
+
+</project>

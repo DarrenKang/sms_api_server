@@ -1,0 +1,22 @@
+server:
+ port: 8081
+
+spring:
+ autoconfigure:
+   exclude:
+   - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+   - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
+   - org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration
+ application:
+   name: smsapi-all
+ profiles:
+   active: ${SPRING_PROFILE:cstest}
+ cloud:
+   vault:
+     token: ${VAULT_TOKEN:s.61nDRiaeDD5ojuQuBTATKdYR}
+     authentication: token
+     port: 8200
+     scheme: https
+     host: vault.omtools.me
+     kv:
+       enabled: true

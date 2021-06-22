@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+   <!--  <bean id="dataSource"  class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl">
+            <value>${datasource.url}</value>
+        </property>
+        <property name="user">
+            <value>${datasource.username}</value>
+        </property>
+        <property name="password">
+            <value>${datasource.password}</value>
+        </property>
+         <property name="driverClass">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+        <property name="acquireIncrement">
+            <value>30</value>
+        </property>
+        <property name="initialPoolSize">
+            <value>100</value>
+        </property>
+        <property name="minPoolSize">
+            <value>100</value>
+        </property>
+        <property name="maxPoolSize">
+            <value>400</value>
+        </property>
+        <property name="maxIdleTime">
+            <value>300</value>
+        </property>
+        <property name="idleConnectionTestPeriod">
+            <value>150</value>
+        </property>
+        <property name="maxStatements">
+            <value>300</value>
+        </property>
+        <property name="maxStatementsPerConnection">
+            <value>300</value>
+        </property>
+        <property name="numHelperThreads">
+            <value>50</value>
+        </property>
+        <property name="statementCacheNumDeferredCloseThreads" value="1"/>
+    </bean>
+ -->
+    <bean id="sessionFactory" parent="sessionFactoryParent" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource">
+        </property>
+        <property name="packagesToScan" value="com.sn.sms.model.sms" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="defaultTimeout" value="30000" />
+    </bean>
+
+    <bean id="smsBaseDao" class="com.sn.sms.dao.UniversalDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--<bean id="smsConfigLogger" class="com.sn.sms.aspect.SmsConfigLogger"></bean>-->
+
+    <!-- the transactional advice -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- all methods starting with get are read-only -->
+            <tx:method name="get*" read-only="true" />
+            <tx:method name="find*" read-only="true" />
+            <tx:method name="query*" read-only="true" />
+            <!-- other methods will get the default transaction settings -->
+            <tx:method name="*" rollback-for="*" timeout="180" />
+        </tx:attributes>
+    </tx:advice>
+
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="allservices" expression="execution(* ph.sinonet.vg.live.service.interfaces.*.*(..))" />-->
+        <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="allservices" />-->
+        <!--<aop:aspect id="smsConfigLoggerAspect" ref="smsConfigLogger">-->
+        	<!--<aop:around method="record" pointcut="execution(* ph.sinonet.vg.live.service.interfaces.*.modify*(..)) or execution(* ph.sinonet.vg.live.service.interfaces.*.add*(..)) or execution(* ph.sinonet.vg.live.service.interfaces.*.delete*(..)) or execution(* ph.sinonet.vg.live.service.interfaces.*.update*(..)) or execution(* ph.sinonet.vg.live.service.interfaces.*.enable*(..)) or execution(* ph.sinonet.vg.live.service.interfaces.*.disable*(..)) or execution(* ph.sinonet.vg.live.service.interfaces.*.cancel*(..)) or execution(* ph.sinonet.vg.live.service.interfaces.*.log*(..)) or execution(* ph.sinonet.vg.live.service.interfaces.*.not*(..)) and !bean(smsConfigLogService)"/>-->
+    	<!--</aop:aspect>-->
+    <!--</aop:config>-->
+    <!-- aop切面 -->
+	<aop:config>  
+		<aop:pointcut id="allservices" expression="execution(* com.sn.sms.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allservices" />
+	</aop:config>
+	
+</beans>
